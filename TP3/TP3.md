@@ -173,14 +173,8 @@ PS C:\Users\loulo> ipconfig /all
 ...
 Carte réseau sans fil Wi-Fi :
 
-   Suffixe DNS propre à la connexion. . . :
-   Description. . . . . . . . . . . . . . : Intel(R) Wi-Fi 7 BE200 320MHz
-   Adresse physique . . . . . . . . . . . : A0-B3-39-64-96-FF
-   DHCP activé. . . . . . . . . . . . . . : Non
-   Configuration automatique activée. . . : Oui
-   Adresse IPv6. . . . . . . . . . . . . .: 2a01:cb01:3036:fade:47d1:5eeb:971a:a524(préféré)
-   Adresse IPv6 temporaire . . . . . . . .: 2a01:cb01:3036:fade:580f:89a9:2df7:937e(préféré)
-   Adresse IPv6 de liaison locale. . . . .: fe80::1884:7156:6457:13d4%7(préféré)
+...
+
    Adresse IPv4. . . . . . . . . . . . . .: 172.20.10.2
    ...
 ```
@@ -208,65 +202,13 @@ PS C:\Users\loulo> ipconfig /all
 
 Configuration IP de Windows
 
-   Nom de l’hôte . . . . . . . . . . : PC_portable_LOU
-   Suffixe DNS principal . . . . . . :
-   Type de noeud. . . . . . . . . .  : Hybride
-   Routage IP activé . . . . . . . . : Non
-   Proxy WINS activé . . . . . . . . : Non
-
-Carte Ethernet Ethernet :
-
-   Statut du média. . . . . . . . . . . . : Média déconnecté
-   Suffixe DNS propre à la connexion. . . : home
-   Description. . . . . . . . . . . . . . : Realtek PCIe GbE Family Controller
-   Adresse physique . . . . . . . . . . . : 74-56-3C-46-3F-C0
-   DHCP activé. . . . . . . . . . . . . . : Oui
-   Configuration automatique activée. . . : Oui
-
-Carte Ethernet Ethernet 2 :
-
-   Suffixe DNS propre à la connexion. . . :
-   Description. . . . . . . . . . . . . . : VirtualBox Host-Only Ethernet Adapter
-   Adresse physique . . . . . . . . . . . : 0A-00-27-00-00-13
-   DHCP activé. . . . . . . . . . . . . . : Non
-   Configuration automatique activée. . . : Oui
-   Adresse IPv6 de liaison locale. . . . .: fe80::7a77:fde6:46f:465a%19(préféré)
-   Adresse IPv4. . . . . . . . . . . . . .: 192.168.56.1(préféré)
-   Masque de sous-réseau. . . . . . . . . : 255.255.255.0
-   Passerelle par défaut. . . . . . . . . :
-   IAID DHCPv6 . . . . . . . . . . . : 705298471
-   DUID de client DHCPv6. . . . . . . . : 00-01-00-01-2E-6C-9F-83-74-56-3C-46-3F-C0
-   NetBIOS sur Tcpip. . . . . . . . . . . : Activé
-
-Carte réseau sans fil Wi-Fi 4 :
-
-   Statut du média. . . . . . . . . . . . : Média déconnecté
-   Suffixe DNS propre à la connexion. . . :
-   Description. . . . . . . . . . . . . . : Intel(R) Wi-Fi 7 BE200 320MHz #4
-   Adresse physique . . . . . . . . . . . : A2-B3-39-64-96-FF
-   DHCP activé. . . . . . . . . . . . . . : Oui
-   Configuration automatique activée. . . : Oui
-
-Carte réseau sans fil Wi-Fi 5 :
-
-   Statut du média. . . . . . . . . . . . : Média déconnecté
-   Suffixe DNS propre à la connexion. . . :
-   Description. . . . . . . . . . . . . . : Intel(R) Wi-Fi 7 BE200 320MHz #5
-   Adresse physique . . . . . . . . . . . : A0-B3-39-64-96-00
-   DHCP activé. . . . . . . . . . . . . . : Oui
-   Configuration automatique activée. . . : Oui
+...
 
 Carte réseau sans fil Wi-Fi :
 
-   Suffixe DNS propre à la connexion. . . :
-   Description. . . . . . . . . . . . . . : Intel(R) Wi-Fi 7 BE200 320MHz
-   Adresse physique . . . . . . . . . . . : A0-B3-39-64-96-FF
-   DHCP activé. . . . . . . . . . . . . . : Non
-   Configuration automatique activée. . . : Oui
-   Adresse IPv6. . . . . . . . . . . . . .: 2a01:cb01:3036:fade:47d1:5eeb:971a:a524(préféré)
-   Adresse IPv6 temporaire . . . . . . . .: 2a01:cb01:3036:fade:1021:399:b519:17a2(préféré)
-   Adresse IPv6 de liaison locale. . . . .: fe80::1884:7156:6457:13d4%7(préféré)
-   Adresse IPv4. . . . . . . . . . . . . .: 172.20.10.77(préféré)
+...
+
+   Adresse IPv4. . . . . . . . . . . . . .: 172.20.10.10(préféré)
 ```
 
 ☀️ Pingz !
