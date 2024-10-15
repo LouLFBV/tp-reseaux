@@ -176,26 +176,18 @@ lou@client2:~/Desktop$ ip a
 . 
 
 [lou@routeur ~]$ ip a
-
-1: lo: <LOOPBACK, UP, LOWER UP> mtu 65536 qdisc qdisc noqueue state UNKNOWN group default qlen 1888
-
-link loopback 08:08:08:08: 1:08:08 brd 00:00:00:00:00:00
-
-inet 127.8.8.1/8 scope host lo valid Ift forever preferred_Ift forever
-
-tpr-
-
-inet6:: 1/128 scope host
-
-2: 1500 qdisc fq_codel state UP group default qlen 1888
-
-valid_ift forever preferred_ift forever enp@s3: <BROADCAST, MULTICAST.UP, LOMER_UP> mtu
-
-link/ether 88:88:27:48:4c:e6 brdffffffffffff Inet 10.5.1.254/24 brd 10.5.1.255 scope global nopref ixroute enpes3
-
-tpr-
-
-valid ift forever preferred Ift forever inet6 fe80::a88:27ff: fedB: 4ce6/64 scope link forever preferred Ift forever
+1: lo: <LOOPBACK, UP, LOWER UP> mtu 65536 qdisc qdisc noqueue state UNKNOWN group default qlen 1000
+    link loopback 08:08:08:08: 1:08:08 brd 00:00:00:00:00:00
+    inet 127.8.8.1/8 scope host lo 
+        valid Ift forever preferred_Ift forever
+    inet6:: 1/128 scope host
+        valid_ift forever preferred_ift forever
+2: enp0s3: <BROADCAST, MULTICAST.UP, LOMER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 88:88:27:48:4c:e6 brd ff:ff:ff:ff:ff:ff 
+    inet 10.5.1.254/24 brd 10.5.1.255 scope global nopref ixroute enp0s3
+        valid ift forever preferred_lft forever 
+    inet6 fe80::a88:27ff: fed8: 4ce6/64 scope link 
+        valid ift forever preferred_lft forever 
 
 
 
