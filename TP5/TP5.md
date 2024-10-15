@@ -190,6 +190,17 @@ lou@client2:~/Desktop$ ip a
         valid ift forever preferred_lft forever 
 
 
+lou@client2:~/Desktop$ ping 10.5.1.11
+PING 10.5.1.11 (10.5.1.11) 56(84) bytes of data.
+64 bytes from 10.5.1.11: icmp_seq=1 ttl=64 time=1.09 ms
+64 bytes from 10.5.1.11: icmp_seq=2 ttl=64 time=1.02 ms
+64 bytes from 10.5.1.11: icmp_seq=3 ttl=64 time=1.85 ms
+^C
+--- 10.5.1.11 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2781ms
+rtt min/avg/max/mdev = 1.024/1.322/1.850/0.374 ms
+
+
 
 PS C:\Users\loulo> ping 10.5.1.11
 
