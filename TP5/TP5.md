@@ -349,7 +349,13 @@ dans le compte rendu je veux que vous utilisiez une syntaxe avec ... | grep <POR
 
 par exemple si, vous repérez le port 8888, vous ajoutez  | grep 8888 à votre commande, pour me mettre en évidence le por que vous avez repéré
 
-
+```
+[lou@routeur ~]$ sudo ss -lnpt
+[sudo] password for lou:
+State          Recv-Q          Send-Q          Local Address:Port          Peer Address:Port          Process
+LISTEN         0               128                   0.0.0.0:22                  0.0.0.0:*             users:(("sshd",pid=687,fd=3))
+LISTEN         0               128                      [::]:22                     [..]:*             users:(("sshd",pid=687,fd=4))
+```
 
 ☀️ Sur routeur.tp5.b1, vérifier que ce port est bien ouvert
 
@@ -359,6 +365,24 @@ la commande est dans le mémooooo pour voir la configuration du pare-feu
 Si vous voyez le "service" ssh ouvert dans le pare-feu, il correspond à un port bien précis. Pour voir la correspondance entre les "services" et le port associé, vous pouvez consulter le contenu du fichier /etc/services. Ca devrait correspondre à ce que vous avez vu juste avant !
 
 ➜ Dernière fois que je le dis : connectez-vous en SSH pour administrer la machine Rocky Linux, n'utilisez pas l'interface console de VirtualBox.
+
+```
+[lou@rrouteur ~]$ sudo firewall-cmd --list-all
+public(active)
+    target: default
+    icmp-block-inversion: no
+    interfaces: enp0s8
+    sources:
+    services: cockpit dhcpv6-client ssh
+    ports:
+    protocols:
+    forward: yes
+    masquerade: yes
+    forward-ports:
+    source-ports:
+    icmp-blocks:
+    rich rules:
+```
 
 IV. Serveur DHCP
 
