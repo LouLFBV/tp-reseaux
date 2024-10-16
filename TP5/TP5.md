@@ -247,18 +247,16 @@ Cette section 1. est à réaliser sur routeur.tp5.b1.
 une seule commande ping suffit à prouver ça, vers un nom de domaine que vous connaissez, genre www.ynov.com (ou autre de votre choix :d)
 
 ```
-[lou@routeur ~]$ ping www.ynov.com
-
-Envoi d’une requête 'ping' sur www.ynov.com [2606:4700:20::681a:ae9] avec 32 octets de données :
-Réponse de 2606:4700:20::681a:ae9 : temps=280 ms
-Réponse de 2606:4700:20::681a:ae9 : temps=89 ms
-Réponse de 2606:4700:20::681a:ae9 : temps=944 ms
-Réponse de 2606:4700:20::681a:ae9 : temps=138 ms
-
-Statistiques Ping pour 2606:4700:20::681a:ae9:
-    Paquets : envoyés = 4, reçus = 4, perdus = 0 (perte 0%),
-Durée approximative des boucles en millisecondes :
-    Minimum = 89ms, Maximum = 944ms, Moyenne = 362ms
+[lou@routeur ~]$ ping ynov.com
+PING ynov.com (172.67.74.226) 56(84) bytes of data.
+64 bytes from 172.67.74.226 (172.67.74.226): icmp_seq=1 ttl=54 time=18.7 ms
+64 bytes from 172.67.74.226 (172.67.74.226): icmp_seq=2 ttl=54 time=22.3 ms
+64 bytes from 172.67.74.226 (172.67.74.226): icmp_seq=3 ttl=54 time=22.0 ms
+64 bytes from 172.67.74.226 (172.67.74.226): icmp_seq=4 ttl=54 time=21.9 ms
+^C
+--- ynov.com ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss, time 3008ms
+rtt min/avg/max/mdev = 18.732/21.244/22.314/1.457 ms
 ```
 
 ☀️ Activez le routage
@@ -306,8 +304,25 @@ avec de la résolution de noms cette fois
 une seule commande ping suffit
 
 ```
-lou@client2:/etc/netplan$ ping www.ynov.com
-ping: www.ynov.com: Temporary failure in name resolution
+lou@client1:~/Desktop$ ping ynov.com
+PING ynov.com (104.26.10.233) 56(84) bytes of data.
+64 bytes from 104.26.10.233: icmp_seq=1 ttl=53 time=24.1 ms
+64 bytes from 104.26.10.233: icmp_seq=2 ttl=53 time=24.2 ms
+^C
+--- ynov.com ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1018ms
+rtt min/avg/max/mdev = 24.056/24.117/24.179/0.061 ms
+
+lou@client2:~/Desktop$ ping ynov.com
+PING ynov.com (104.26.10.233) 56(84) bytes of data.
+64 bytes from 104.26.10.233: icmp_seq=1 ttl=53 time=24.1 ms
+64 bytes from 104.26.10.233: icmp_seq=2 ttl=53 time=24.2 ms
+^C
+--- ynov.com ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1018ms
+rtt min/avg/max/mdev = 24.056/24.117/24.179/0.061 ms
+
+
 
 ```
 
@@ -350,11 +365,9 @@ dans le compte rendu je veux que vous utilisiez une syntaxe avec ... | grep <POR
 par exemple si, vous repérez le port 8888, vous ajoutez  | grep 8888 à votre commande, pour me mettre en évidence le por que vous avez repéré
 
 ```
-[lou@routeur ~]$ sudo ss -lnpt
-[sudo] password for lou:
-State          Recv-Q          Send-Q          Local Address:Port          Peer Address:Port          Process
-LISTEN         0               128                   0.0.0.0:22                  0.0.0.0:*             users:(("sshd",pid=687,fd=3))
-LISTEN         0               128                      [::]:22                     [..]:*             users:(("sshd",pid=687,fd=4))
+[lou@routeur ~]$ sudo ss -lnpt | grep 22
+LISTEN 0      128          0.0.0.0:22        0.0.0.0:*    users:(("sshd",pid=687,fd=3))
+LISTEN 0      128             [::]:22           [::]:*    users:(("sshd",pid=687,fd=4))
 ```
 
 ☀️ Sur routeur.tp5.b1, vérifier que ce port est bien ouvert
@@ -367,7 +380,7 @@ Si vous voyez le "service" ssh ouvert dans le pare-feu, il correspond à un port
 ➜ Dernière fois que je le dis : connectez-vous en SSH pour administrer la machine Rocky Linux, n'utilisez pas l'interface console de VirtualBox.
 
 ```
-[lou@rrouteur ~]$ sudo firewall-cmd --list-all
+[lou@routeur ~]$ sudo firewall-cmd --list-all
 public(active)
     target: default
     icmp-block-inversion: no
