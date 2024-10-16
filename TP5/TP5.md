@@ -381,20 +381,21 @@ Si vous voyez le "service" ssh ouvert dans le pare-feu, il correspond à un port
 
 ```
 [lou@routeur ~]$ sudo firewall-cmd --list-all
-public(active)
-    target: default
-    icmp-block-inversion: no
-    interfaces: enp0s8
-    sources:
-    services: cockpit dhcpv6-client ssh
-    ports:
-    protocols:
-    forward: yes
-    masquerade: yes
-    forward-ports:
-    source-ports:
-    icmp-blocks:
-    rich rules:
+[sudo] password for lou:
+public (active)
+  target: default
+  icmp-block-inversion: no
+  interfaces: enp0s3 enp0s8
+  sources:
+  services: cockpit dhcpv6-client ssh
+  ports:
+  protocols:
+  forward: yes
+  masquerade: yes
+  forward-ports:
+  source-ports:
+  icmp-blocks:
+  rich rules:
 ```
 
 IV. Serveur DHCP
@@ -495,7 +496,48 @@ indiquer aux clients que la passerelle dans le réseau ici c'est 10.5.1.254
 
 indiquer aux clients qu'un serveur DNS joignable depuis le réseau c'est 1.1.1.1
 
+```
+[lou@routeur ~]$ sudo nano /etc/dhcp/dhcpd.conf
 
+option domain-name     "lan";
+option domain-name-servers     1.1.1.1;
+default-lease-time 600;
+max-lease-time 7200;
+authoritative;
+subnet 10.5.1.0 netmask 255.255.255.0 {
+    range dynamic-bootp 10.5.1.137 10.5.1.237;
+    option broadcast-address 10.5.1.255;
+    option routers 10.5.1.254;
+}
+
+[lou@routeur ~]$ sudo systemctl start dhcpd
+[sudo] password for lou:
+[lou@routeur ~]$ sudo systemctl restart dhcpd
+[lou@routeur ~]$ sudo systemctl status dhcpd
+● dhcpd.service - DHCPv4 Server Daemon
+     Loaded: loaded (/usr/lib/systemd/system/dhcpd.service; enabled; preset: disabled)
+     Active: active (running) since Wed 2024-10-16 22:18:27 CEST; 14s ago
+       Docs: man:dhcpd(8)
+             man:dhcpd.conf(5)
+   Main PID: 1452 (dhcpd)
+     Status: "Dispatching packets..."
+      Tasks: 1 (limit: 11099)
+     Memory: 4.5M
+        CPU: 36ms
+     CGroup: /system.slice/dhcpd.service
+             └─1452 /usr/sbin/dhcpd -f -cf /etc/dhcp/dhcpd.conf -user dhcpd -group dhcpd --no-pid
+
+Oct 16 22:18:27 routeur dhcpd[1452]: ** Ignoring requests on enp0s8.  If this is not what
+Oct 16 22:18:27 routeur dhcpd[1452]:    you want, please write a subnet declaration
+Oct 16 22:18:27 routeur dhcpd[1452]:    in your dhcpd.conf file for the network segment
+Oct 16 22:18:27 routeur dhcpd[1452]:    to which interface enp0s8 is attached. **
+Oct 16 22:18:27 routeur dhcpd[1452]:
+Oct 16 22:18:27 routeur dhcpd[1452]: Listening on LPF/enp0s3/08:00:27:60:73:3d/10.5.1.0/24
+Oct 16 22:18:27 routeur dhcpd[1452]: Sending on   LPF/enp0s3/08:00:27:60:73:3d/10.5.1.0/24
+Oct 16 22:18:27 routeur dhcpd[1452]: Sending on   Socket/fallback/fallback-net
+Oct 16 22:18:27 routeur dhcpd[1452]: Server starting service.
+Oct 16 22:18:27 routeur systemd[1]: Started DHCPv4 Server Daemon.
+```
 
 
 
@@ -512,6 +554,31 @@ vérifiez que c'est bien une adresse IP entre .137 et .237
 
 prouvez qu'il a immédiatement un accès internet
 
+```
+lou@client3:~$ ip a 
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host noprefixroute 
+       valid_lft forever preferred_lft forever
+2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 08:00:27:83:1f:98 brd ff:ff:ff:ff:ff:ff
+    inet 10.5.1.137/24 metric 100 brd 10.5.1.255 scope global dynamic enp0s3
+       valid_lft 543sec preferred_lft 543sec
+    inet6 fe80::a00:27ff:fe83:1f98/64 scope link 
+       valid_lft forever preferred_lft forever
+
+lou@client3:~$ ping ynov.com
+PING ynov.com (104.26.10.233) 56(84) bytes of data.
+64 bytes from 104.26.10.233: icmp_seq=1 ttl=53 time=17.5 ms
+64 bytes from 104.26.10.233: icmp_seq=2 ttl=53 time=18.5 ms
+^C
+--- ynov.com ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1240ms
+rtt min/avg/max/mdev = 17.456/17.998/18.540/0.542 ms
+
+```
 
 C. Consulter le bail DHCP
 ➜ Côté serveur DHCP, à chaque fois qu'une adresse IP est proposée à quelqu'un, le serveur crée un fichier texte appelé bail DHCP (ou DHCP lease en anglais).
@@ -536,9 +603,58 @@ afficher le contenu du fichier qui contient les baux DHCP
 
 on devrait y voir l'IP qui a été proposée au client, ainsi que son adresse MAC
 
+```
+[lou@routeur ~]$ nano /var/lib/dhcpd/dhcpd.leases
+
+# The format of this file is documented in the dhcpd.leases(5) manual page.
+# This lease file was written by isc-dhcp-4.4.2b1
+
+# authoring-byte-order entry is generated, DO NOT DELETE
+authoring-byte-order little-endian;
+
+server-duid "\000\001\000\001.\242Y\220\010\000'\214\2759";
+
+lease 10.5.1.137 {
+  starts 3 2024/10/16 20:20:21;
+  ends 3 2024/10/16 20:30:21;
+  cltt 3 2024/10/16 20:20:21;
+  binding state active;
+  next binding state free;
+  rewind binding state free;
+  hardware ethernet 08:00:27:83:1f:98;
+  uid "\377\3424?>\000\002\000\000\253\021\230\277\030e\244V\362\336";
+  client-hostname "client3";
+}
+lease 10.5.1.137 {
+  starts 3 2024/10/16 20:25:21;
+  ends 3 2024/10/16 20:35:21;
+  cltt 3 2024/10/16 20:25:21;
+  binding state active;
+  next binding state free;
+  rewind binding state free;
+
+```
+
 ☀️ Confirmez qu'il s'agit bien de la bonne adresse MAC
 
 à faire sur client3.tp5.b1
 
 consultez l'adresse MAC du client
 on peut consulter les adresses MAC des cartes réseau avec un simple ip a
+
+```
+lou@client3:~$ ip a 
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host noprefixroute 
+       valid_lft forever preferred_lft forever
+2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 08:00:27:83:1f:98 brd ff:ff:ff:ff:ff:ff
+    inet 10.5.1.137/24 metric 100 brd 10.5.1.255 scope global dynamic enp0s3
+       valid_lft 375sec preferred_lft 375sec
+    inet6 fe80::a00:27ff:fe83:1f98/64 scope link 
+       valid_lft forever preferred_lft forever
+
+```
