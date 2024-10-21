@@ -326,10 +326,10 @@ On est sur notre (futur) beau serveur Web web.tp6.b1.
 On est pas en cours de Linux, ni en cours de dév Web, alors on va s'intéresser à la partie réseau uniquement, et limiter au maximum les interactions spécifiques à Linux.
 ➜ Installez et démarrez le service web NGINX
 
-# installation du service NGINX
+ installation du service NGINX
 sudo dnf install -y nginx
 
-# démarrage du service NGINX
+ démarrage du service NGINX
 sudo systemctl enable --now nginx
 
 
@@ -467,7 +467,7 @@ Sur internet ça peut partir dans tous les sens, alors je vous ai écrit un peti
 
 Installation du serveur DNS :
 
-# installation du serveur DNS, son p'tit nom c'est BIND9
+ installation du serveur DNS, son p'tit nom c'est BIND9
 $ sudo dnf install -y bind bind-utils
 
 
@@ -509,7 +509,7 @@ il ne faut donc pas les mettre dans vos fichiers
 
 
 
-# éditez le fichier de config principal pour qu'il ressemble à :
+ éditez le fichier de config principal pour qu'il ressemble à :
 $ sudo cat /etc/named.conf
 options {
         listen-on port 53 { 127.0.0.1; any; };
@@ -521,14 +521,14 @@ options {
 
         recursion yes;
 [...]
-# référence vers notre fichier de zone
+ référence vers notre fichier de zone
 zone "tp6.b1" IN {
      type master;
      file "tp6.b1.db";
      allow-update { none; };
      allow-query {any; };
 };
-# référence vers notre fichier de zone inverse
+ référence vers notre fichier de zone inverse
 zone "2.6.10.in-addr.arpa" IN {
      type master;
      file "tp6.b1.rev";
@@ -544,7 +544,7 @@ hésitez pas à virer mes commentaires de façon générale
 c'juste pour que vous captiez mais ça fait dégueu dans un fichier de conf
 
 
-# Fichier de zone pour nom -> IP
+ Fichier de zone pour nom -> IP
 
 $ sudo cat /var/named/tp6.b1.db
 
@@ -566,7 +566,7 @@ dns       IN A 10.6.2.12
 
 
 
-# Fichier de zone inverse pour IP -> nom
+ Fichier de zone inverse pour IP -> nom
 
 $ sudo cat /var/named/tp6.b1.rev
 
@@ -589,15 +589,15 @@ $TTL 86400
 
 ➜ Une fois ces 3 fichiers en place, démarrez le service DNS
 
-# Démarrer le service
+ Démarrer le service
 $ sudo systemctl enable --now named
-# OUI JE SAIS le truc s'appelle bind9 et faut démarrer "named"
-# et moi, je vous en pose des questions ?
+ OUI JE SAIS le truc s'appelle bind9 et faut démarrer "named"
+ et moi, je vous en pose des questions ?
 
-# Obtenir des infos sur le service
+ Obtenir des infos sur le service
 $ sudo systemctl status named
 
-# Obtenir des logs en cas de probème
+ Obtenir des logs en cas de probème
 $ sudo journalctl -xe -u named
 
 
@@ -630,18 +630,18 @@ success
 5. Tests manuels
 ☀️ Effectuez des requêtes DNS manuellement depuis le serveur DNS lui-même dans un premier temps
 
-# dig permet de faire des requêtes DNS manuellement sous Linux
-# cette commande demande à 10.6.2.12 à quelle IP correspond web.tp6.b1
+ dig permet de faire des requêtes DNS manuellement sous Linux
+  cette commande demande à 10.6.2.12 à quelle IP correspond web.tp6.b1
 dig web.tp6.b1 @10.6.2.12
 
-# lui doit fonctionner aussi
+ lui doit fonctionner aussi
 dig dns.tp6.b1 @10.6.2.12
 
-# et ça aussi dukou !
+ et ça aussi dukou !
 dig ynov.com @10.6.2.12
 
-# et on devrait aussi pouvoir faire l'inverse en ajoutant -x :
-# demander quel est le nom qui correspond à une IP donnée
+ et on devrait aussi pouvoir faire l'inverse en ajoutant -x :
+ demander quel est le nom qui correspond à une IP donnée
 dig -x 10.6.2.11 @10.6.2.12
 dig -x 10.6.2.12 @10.6.2.12
 
@@ -792,11 +792,11 @@ vous pouvez télécharger Wireshark sur client1.tp6.b1 mais bon... bourrin
 sinon vous pouvez lancer une capture réseau avec tcpdump, on pourra ensuite ouvrir le fichier avec Wireshark (sur votre PC, pas dans une VM) pour visualiser
 
 
-# principe de la commande
+ principe de la commande
 tcpdump -w <NOM_DU_FICHIER> -i <INTERFACE_A_CAPTURER>
 
-# par exemple, si vous voulez enregistrer tout ce qui passe par enp0s3
-# et enregistrer ça dans un fichier toto.pcap
+ par exemple, si vous voulez enregistrer tout ce qui passe par enp0s3
+ et enregistrer ça dans un fichier toto.pcap
 tcpdump -w toto.pcap -i enp0s3
 
 [toto](TP6/toto.pcapng)
@@ -821,3 +821,30 @@ commande dans le mémo pour voir le serveur DNS connu actuellement
 
 
 ➜ Vous devriez pouvoir visiter http://web.tp6.b1 avec le navigateur, ça devrait fonctionner sans aucune autre action.
+
+```
+lou@client2:~$ resolvectl
+Global
+         Protocols: -LLMNR -mDNS -DNSOverTLS DNSSEC=no/unsupported
+  resolv.conf mode: stub
+
+Link 2 (enp0s3)
+    Current Scopes: DNS
+         Protocols: +DefaultRoute -LLMNR -mDNS -DNSOverTLS DNSSEC=no/unsupported
+       DNS Servers: 10.6.2.12
+        DNS Domain: srv.world
+
+lou@client2:~$ curl http://web.tp6.b1
+<!doctype html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>HTTP Server Test Page powered by: Rocky Linux</title>
+    <style type="text/css">
+      /*<![CDATA[*/
+      
+      html {
+        height: 100%;
+        width: 100%;
+```
