@@ -780,7 +780,6 @@ curl https://https://sitedefou.tp7.b1 en ayant modifié votre fichier hosts pour
 ```
 lou@client1:~$ sudo curl -k https://sitedefou.tp7.b1
 meow !
-
 ```
 
 
